@@ -1,27 +1,14 @@
-# Imagen base ligera con Python
 FROM python:3.10-slim
 
-# Establecer directorio de trabajo
-WORKDIR /app
-
-# Instalar git-lfs
-RUN apt-get update && apt-get install -y git-lfs
+RUN apt-get update && apt-get install -y git git-lfs
 RUN git lfs install
 
-# Copiar archivos de requisitos
-COPY requirements.txt .
+WORKDIR /app
 
-# Copiar el resto del proyecto
-COPY . .
-
-# Descargar los archivos LFS (como tu modelo .h5)
-RUN git lfs pull
-
-
+# Clona tu repo con LFS habilitado
+RUN git clone https://github.com/CarlosRG94/AnalisisSentimientosApi
 # Instalar dependencias (sin caché para reducir tamaño)
 RUN pip install --no-cache-dir -r requirements.txt
-
-
 
 # Exponer el puerto que usa FastAPI
 EXPOSE 8000
